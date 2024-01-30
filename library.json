@@ -4,6 +4,10 @@
   "version": "1.11.0",
   "keywords": "iqmath",
   "description": "Initial port of the IQMath Library, obtained from TI MSPM0 SDK.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikisama/IQmath.git"
+  },
   "build": {
     "flags": [
       "-Iinclude"
