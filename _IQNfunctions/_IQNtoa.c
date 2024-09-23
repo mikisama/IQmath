@@ -54,7 +54,7 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
         /* Error: integer width is non integer. */
         return (2);
     }
-    
+
     /* Initialize local variables and extract the integer width. */
     count = 0;
     ui16IntWidth = 0;
@@ -76,7 +76,7 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
         /* Error: integer width too large */
         return (2);
     }
-    
+
     /* Check the next character for '.' and increment over. */
     if (*format++ != '.') {
         /* Error: format missing the '.' character. */
@@ -98,7 +98,7 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
             return (2);
         }
     }
-    
+
     /* Check the next character for 'f' or 'F'. */
     if (*format != 'f' && *format != 'F') {
         /* Error: format missing the format specifying character. */
@@ -110,12 +110,12 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
         /* Error: missing null terminator. */
         return (2);
     }
-    
+
     /*
      * Begin constructing the string.
      */
     pcBuf = string;
-    
+
     /* Check for negative value. */
     if (iqNInput < 0) {
         iqNInput = -iqNInput;
@@ -126,7 +126,7 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
     /* Construct the integer string in reverse. */
     pcBuf += ui16IntWidth;
     ui32Integer = uiqNInput >> q_value;
-    
+
     for (count = ui16IntWidth; count > 0; count--) {
         /* Integer position n = ui32Integer - floor(ui32Integer/(10^n))*(10^n) */
         __mpyf_start(&ui16IntState, &ui16MPYState);
@@ -140,11 +140,11 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
         }
         ui32Integer -= ui32IntTemp;
         __mpy_stop(&ui16IntState, &ui16MPYState);
-        
+
         *--pcBuf = ui32Integer + '0';
         ui32Integer = ui32IntegerTenth;
     }
-    
+
     /* Check if there is any remaining input. */
     if (ui32Integer) {
         /* Error: integer format too small. */
@@ -154,20 +154,20 @@ int_fast16_t __IQNtoa(char *string, const char *format, int_fast32_t iqNInput, i
     /* Construct the fractional string if specified using unsigned iq32. */
     pcBuf += ui16IntWidth;
     uiq32Fractional = uiqNInput << (32 - q_value);
-    
+
     if (ui16FracWidth > 0) {
         *pcBuf++ = '.';
-        
+
         while (ui16FracWidth--) {
             __mpy_start(&ui16IntState, &ui16MPYState);
             uiiq32FractionalTen = __mpyx_u(uiq32Fractional, 10);
             __mpy_stop(&ui16IntState, &ui16MPYState);
-            
+
             uiq32Fractional = (uint_fast32_t)uiiq32FractionalTen;
             *pcBuf++ = (uint8_t)(uiiq32FractionalTen >> 32) + '0';
         }
     }
-    
+
     /* Add null terminating character and return. */
     *pcBuf = 0;
     return (0);

@@ -32,7 +32,7 @@ extern int_fast32_t _IQ31sqrt(int_fast32_t iq31Input);
  * @return                IQN type result of inverse sine.
  */
 /*
- * Calculate asin using a 4th order Taylor series for inputs in the range of 
+ * Calculate asin using a 4th order Taylor series for inputs in the range of
  * zero to 0.5. The coefficients are stored in a lookup table with 17 ranges
  * to give an accuracy of 26 bits.
  *
@@ -61,7 +61,7 @@ extern int_fast32_t _IQ31sqrt(int_fast32_t iq31Input);
  *
  * Acos is implemented using asin and identity (1).
  */
-     
+
 #if defined (__TI_COMPILER_VERSION__)
     #pragma FUNC_ALWAYS_INLINE(__IQNasin)
 #elif defined(__IAR_SYSTEMS_ICC__)
@@ -77,7 +77,7 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
     const int_fast32_t *piq29Coeffs;
     uint_fast32_t uiq31Input;
     uint_fast32_t uiq31InputTemp;
-    
+
     /*
      * Extract the sign from the input and set the following status bits:
      *
@@ -90,8 +90,8 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
         ui8Status |= 1;
         iqNInput = -iqNInput;
     }
-    
-    /* 
+
+    /*
      * Check if input is within the valid input range:
      *
      *     0 <= iqNInput <= 1
@@ -99,11 +99,11 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
     if (iqNInput > ((uint_fast32_t)1 << q_value)) {
         return 0;
     }
-    
+
     /* Convert input to unsigned iq31. */
     uiq31Input = (uint_fast32_t)iqNInput << (31 - q_value);
-    
-    /* 
+
+    /*
      * Apply the transformation from asin to acos if input is greater than 0.5.
      * The first step is to calculate the following:
      *
@@ -113,20 +113,20 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
     if (uiq31InputTemp < 0x40000000) {
         /* Halve the result. */
         uiq31Input = uiq31InputTemp >> 1;
-        
+
         /* Calculate sqrt((1 - uiq31Input)/2) */
         uiq31Input = _IQ31sqrt(uiq31Input);
-        
+
         /* Flag that the transformation was used. */
         ui8Status |= 2;
     }
-    
+
     /* Calculate the index using the left 6 most bits of the input. */
     index = (int_fast16_t)(uiq31Input >> 26) & 0x003f;
-    
+
     /* Set the coefficient pointer. */
     piq29Coeffs = _IQ29Asin_coeffs[index];
-    
+
     /*
      * Mark the start of any multiplies. This will disable interrupts and set
      * the multiplier to fractional mode. This is designed to reduce overhead
@@ -134,43 +134,43 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
      * only).
      */
     __mpyf_start(&ui16IntState, &ui16MPYState);
-    
-    /* 
+
+    /*
      * Calculate asin(x) using the following Taylor series:
      *
      *     asin(x) = (((c4*x + c3)*x + c2)*x + c1)*x + c0
      */
-    
+
     /* c4*x */
     iq29Result = __mpyf_l(uiq31Input, *piq29Coeffs++);
-    
+
     /* c4*x + c3 */
     iq29Result = iq29Result + *piq29Coeffs++;
-    
+
     /* (c4*x + c3)*x */
     iq29Result = __mpyf_l(uiq31Input, iq29Result);
-    
+
     /* (c4*x + c3)*x + c2 */
     iq29Result = iq29Result + *piq29Coeffs++;
-    
+
     /* ((c4*x + c3)*x + c2)*x */
     iq29Result = __mpyf_l(uiq31Input, iq29Result);
-    
+
     /* ((c4*x + c3)*x + c2)*x + c1 */
     iq29Result = iq29Result + *piq29Coeffs++;
-    
+
     /* (((c4*x + c3)*x + c2)*x + c1)*x */
     iq29Result = __mpyf_l(uiq31Input, iq29Result);
-    
+
     /* (((c4*x + c3)*x + c2)*x + c1)*x + c0 */
     iq29Result = iq29Result + *piq29Coeffs++;
-    
-    /* 
+
+    /*
      * Mark the end of all multiplies. This restores MPY and interrupt states
      * (MSP430 only).
      */
     __mpy_stop(&ui16IntState, &ui16MPYState);
-    
+
     /* check if we switched to acos */
     if (ui8Status & 2) {
         /* asin(x) = pi/2 - 2*iq29Result */
@@ -178,15 +178,15 @@ __STATIC_INLINE int_fast32_t __IQNasin(int_fast32_t iqNInput, const int8_t q_val
         iq29Result -= iq29_halfPi;      // this is equivalent to the above
         iq29Result = -iq29Result;       // but avoids using temporary registers
     }
-    
+
     /* Shift iq29 result to specified q_value. */
     iq29Result >>= 29 - q_value;
-    
+
     /* Add sign to the result. */
     if (ui8Status & 1) {
         iq29Result = -iq29Result;
     }
-    
+
     return iq29Result;
 }
 
@@ -263,7 +263,7 @@ int32_t _IQ24asin(int32_t a)
  * @param a               IQ23 type input.
  *
  * @return                IQ23 type result of inverse sine.
- */ 
+ */
 int32_t _IQ23asin(int32_t a)
 {
     return __IQNasin(a, 23);

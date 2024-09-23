@@ -45,7 +45,7 @@
  * and performs an error correction with each iteration. The equation is:
  *
  *     x1 = x0 - f(x0)/f'(x0)
- * 
+ *
  * Where f' is the derivative of f. The approximation for inverse square root
  * is:
  *
@@ -76,26 +76,26 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
     uint_fast32_t uiq30Result;
     uint_fast32_t uiq31Result;
     uint_fast32_t uiq32Input;
-    
+
     /* If the type is (inverse) magnitude we need to calculate x^2 + y^2 first. */
     if (type == TYPE_MAG || type == TYPE_IMAG) {
         uint_fast64_t ui64Sum;
-        
+
         __mpy_start(&ui16IntState, &ui16MPYState);
-        
+
         /* Calculate x^2 */
         ui64Sum = __mpyx(iqNInputX, iqNInputX);
-        
+
         /* Calculate y^2 and add to x^2 */
         ui64Sum += __mpyx(iqNInputY, iqNInputY);
-    
+
         __mpy_stop(&ui16IntState, &ui16MPYState);
-        
+
         /* Return if the magnitude is simply zero. */
         if (ui64Sum == 0) {
             return 0;
         }
-        
+
         /*
          * Initialize the exponent to positive for magnitude, negative for
          * inverse magnitude.
@@ -106,7 +106,7 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
         else {
             i16Exponent = -(32 - q_value);
         }
-        
+
         /* Shift to iq64 by keeping track of exponent. */
         while ((uint_fast16_t)(ui64Sum >> 48) < 0x4000) {
             ui64Sum <<= 2;
@@ -119,7 +119,7 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
                 i16Exponent++;
             }
         }
-        
+
         /* Shift ui64Sum to unsigned iq32 and set as uiq32Input */
         uiq32Input = (uint_fast32_t)(ui64Sum >> 32);
     }
@@ -128,7 +128,7 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
         if (iqNInputX <= 0) {
             return 0;
         }
-    
+
         /* If the q_value gives an odd starting exponent make it even. */
         if ((32 - q_value) % 2 == 1) {
             iqNInputX <<= 1;
@@ -151,10 +151,10 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
                 i16Exponent = -((32 - q_value) >> 1);
             }
         }
-        
+
         /* Save input as unsigned iq32. */
         uiq32Input = (uint_fast32_t)iqNInputX;
-        
+
         /* Shift to iq32 by keeping track of exponent */
         while ((uint_fast16_t)(uiq32Input >> 16) < 0x4000) {
             uiq32Input <<= 2;
@@ -168,13 +168,13 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
             }
         }
     }
-    
-    
+
+
     /* Use left most byte as index into lookup table (range: 32-128) */
     ui8Index = uiq32Input >> 25;
     ui8Index -= 32;
     uiq30Guess = (uint_fast32_t)_IQ14sqrt_lookup[ui8Index] << 16;
-    
+
     /*
      * Mark the start of any multiplies. This will disable interrupts and set
      * the multiplier to fractional mode. This is designed to reduce overhead
@@ -182,7 +182,7 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
      * only).
      */
     __mpyf_start(&ui16IntState, &ui16MPYState);
-    
+
     /*
      * Set the loop counter:
      *
@@ -200,20 +200,20 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
     while (ui8Loops--) {
         /* x*g */
         uiq31Result = __mpyf_ul(uiq32Input, uiq30Guess);
-        
+
         /* x*g*g */
         uiq30Result = __mpyf_ul(uiq31Result, uiq30Guess);
-        
+
         /* 3 - x*g*g */
         uiq30Result = -(uiq30Result - 0xC0000000);
-        
-        /* 
-         * g/2*(3 - x*g*g) 
+
+        /*
+         * g/2*(3 - x*g*g)
          * uiq30Guess = uiq31Guess/2
          */
         uiq30Guess = __mpyf_ul(uiq30Guess, uiq30Result);
     }
-    
+
     /* Calculate sqrt(x) for both sqrt and mag */
     if (type == TYPE_SQRT || type == TYPE_MAG) {
         /*
@@ -221,21 +221,21 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
          * by uiq32Input to get square root result.
          */
         uiq31Result = __mpyf_ul(uiq30Guess, uiq32Input);
-    
+
         __mpy_stop(&ui16IntState, &ui16MPYState);
-    
+
         /*
          * Shift the result right by 31 - q_value.
          */
         i16Exponent -= (31 - q_value);
-        
+
         /* Saturate value for any shift larger than 1 (only need this for mag) */
         if (type == TYPE_MAG) {
             if (i16Exponent > 0) {
                 return 0x7fffffff;
             }
         }
-        
+
         /* Shift left by 1 check only needed for iq30 and iq31 mag/sqrt */
         if (q_value >= 30) {
             if (i16Exponent > 0) {
@@ -247,20 +247,20 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
     /* Separate handling for isqrt and imag. */
     else {
         __mpy_stop(&ui16IntState, &ui16MPYState);
-        
+
         /*
          * Shift the result right by 31 - q_value, add one since we use the uiq30
          * result without shifting.
          */
         i16Exponent = i16Exponent - (31 - q_value) + 1;
         uiq31Result = uiq30Guess;
-        
+
         /* Saturate any positive non-zero exponent for isqrt. */
         if (i16Exponent > 0) {
             return 0x7fffffff;
         }
     }
-        
+
     /* Shift uiq31Result right by -exponent */
     if (i16Exponent <= -32) {
         return 0;
@@ -280,8 +280,8 @@ __STATIC_INLINE int_fast32_t __IQNsqrt(int_fast32_t iqNInputX, int_fast32_t iqNI
     if (i16Exponent) {
         uiq31Result++;
         uiq31Result >>= 1;
-    }        
-    
+    }
+
     return uiq31Result;
 }
 
@@ -309,7 +309,7 @@ __STATIC_INLINE int_fast32_t __IQNsqrt_MathACL(int_fast32_t iqNInputX, const int
     /* Scale factor computation:
      * output: IQ30 format value whose square root is to be computed by MATHACL
      * scale_factor: (n) where the input has been divided by 2^(2n) to render IQ30
-     * value in the range (1,2). 
+     * value in the range (1,2).
      */
     uint32_t input, output;
     uint8_t scale_factor;
@@ -331,15 +331,15 @@ __STATIC_INLINE int_fast32_t __IQNsqrt_MathACL(int_fast32_t iqNInputX, const int
             /* multiply by 2 until reaching IQ30 [1.0,2.0 range] */
             input <<= 1;
         }
-        /* 
-         * Scale factor: take into account the shift from q_value to IQ30, the remaining value 
+        /*
+         * Scale factor: take into account the shift from q_value to IQ30, the remaining value
          * is the scale factor such that scaled number = (nonscaled number)^(2^scale_factor)
          */
         scale_factor = (30-q_value)-n;
         output = input;
     }
     /* SQRT MATHACL Operation
-     * write control 
+     * write control
      * CTL parameters are: sqrt operation | number of iterations | scale factor
      */
     MATHACL->CTL = 5 | (31 << 24) | (scale_factor << 16);
@@ -347,8 +347,8 @@ __STATIC_INLINE int_fast32_t __IQNsqrt_MathACL(int_fast32_t iqNInputX, const int
      * write to OP1 is the trigger
      */
     MATHACL->OP1 = output;
-    /* read sqrt 
-     * shift output from IQ16 to q_value 
+    /* read sqrt
+     * shift output from IQ16 to q_value
      */
     if(q_value>16){
         return (uint_fast32_t)MATHACL->RES1 << (q_value - 16);

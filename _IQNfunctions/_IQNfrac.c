@@ -25,9 +25,9 @@
 __STATIC_INLINE int_fast32_t __IQNfrac(int_fast32_t iqNInput, int8_t q_value)
 {
     int_fast32_t iqNInteger;
-    
+
     iqNInteger = (uint_fast32_t)iqNInput & ((uint_fast32_t)0xffffffff << q_value);
-    
+
     return (iqNInput - iqNInteger);
 }
 

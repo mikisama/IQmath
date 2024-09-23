@@ -10,11 +10,11 @@
 #endif
 /**
  * @brief Repeats the last IQMath multiplication or division operation on two given parameters.
- *        Function assumes MathACL Control register has been initialized by previous function call 
+ *        Function assumes MathACL Control register has been initialized by previous function call
  *        with operation and IQ format. Using without initializing can lead to unexpected results.
  *
  * @param iqNInput1       IQN format number to be multiplied or divided.
- * @param iqNInput2       IQN format number to be multiplied or divided by. 
+ * @param iqNInput2       IQN format number to be multiplied or divided by.
  *
  * @return                IQN type result of operation.
  */
@@ -30,11 +30,11 @@ __STATIC_INLINE int_fast32_t __IQopRepeat(int_fast32_t iqNInput1, int_fast32_t i
 
 /**
  * @brief Repeats the last IQMath multiplication or division operation on two given parameters.
- *        Function assumes MathACL Control register has been initialized by previous function call 
+ *        Function assumes MathACL Control register has been initialized by previous function call
  *        with operation and IQ format. Using without initializing can lead to unexpected results.
  *
  * @param A               IQN format number to be multiplied or divided.
- * @param B               IQN format number to be multiplied or divided by. 
+ * @param B               IQN format number to be multiplied or divided by.
  *
  * @return                IQN type result of operation.
  */

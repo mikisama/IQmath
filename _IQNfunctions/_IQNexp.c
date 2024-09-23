@@ -1,6 +1,6 @@
 /*!****************************************************************************
  *  @file       _IQNexp.c
- *  @brief      Functions to compute the exponential of the input 
+ *  @brief      Functions to compute the exponential of the input
  *              and return the result.
  *
  *  <hr>
@@ -15,13 +15,13 @@
  * @brief Computes the exponential of an IQN input.
  *
  * @param iqNInput          IQN type input.
- * @param iqNLookupTable    Integer result lookup table. 
+ * @param iqNLookupTable    Integer result lookup table.
  * @param ui8IntegerOffset  Integer portion offset
  * @param iqN_MIN           Minimum parameter value.
  * @param iqN_MAX           Maximum parameter value.
  * @param q_value           IQ format.
  *
- * 
+ *
  * @return                  IQN type result of exponential.
  */
 #if defined (__TI_COMPILER_VERSION__)
@@ -41,26 +41,26 @@ __STATIC_INLINE int_fast32_t __IQNexp(int_fast32_t iqNInput, const uint_fast32_t
     uint_fast32_t uiq30FractionalResult;
     uint_fast32_t uiq31FractionalResult;
     const uint_fast32_t *piq30Coeffs;
-    
+
     /* Input is negative. */
     if (iqNInput < 0) {
         /* Check for the minimum value. */
         if (iqNInput < iqN_MIN) {
             return 0;
         }
-        
+
         /* Extract the fractional portion in iq31 and set sign bit. */
         iq31Fractional = iqNInput;
         iq31Fractional <<= (31 - q_value);
         iq31Fractional |= 0x80000000;
-    
+
         /* Extract the integer portion. */
         i16Integer = (int_fast16_t)(iqNInput >> q_value) + 1;
-    
+
         /* Offset the integer portion and lookup the integer result. */
         i16Integer += ui8IntegerOffset;
         uiqNIntegerResult = iqNLookupTable[i16Integer];
-        
+
         /* Reduce the fractional portion to -ln(2) < iq31Fractional < 0 */
         if (iq31Fractional <= -iq31_ln2) {
             iq31Fractional += iq31_ln2;
@@ -73,26 +73,26 @@ __STATIC_INLINE int_fast32_t __IQNexp(int_fast32_t iqNInput, const uint_fast32_t
         if (iqNInput > iqN_MAX) {
             return INT32_MAX;
         }
-        
+
         /* Extract the fractional portion in iq31 and clear sign bit. */
         iq31Fractional = iqNInput;
         iq31Fractional <<= (31 - q_value);
         iq31Fractional &= 0x7fffffff;
-    
+
         /* Extract the integer portion. */
         i16Integer = (int_fast16_t)(iqNInput >> q_value);
-    
+
         /* Offset the integer portion and lookup the integer result. */
         i16Integer += ui8IntegerOffset;
         uiqNIntegerResult = iqNLookupTable[i16Integer];
-        
+
         /* Reduce the fractional portion to 0 < iq31Fractional < ln(2) */
         if (iq31Fractional >= iq31_ln2) {
             iq31Fractional -= iq31_ln2;
             uiqNIntegerResult <<= 1;
         }
     }
-    
+
     /*
      * Mark the start of any multiplies. This will disable interrupts and set
      * the multiplier to fractional mode. This is designed to reduce overhead
@@ -100,7 +100,7 @@ __STATIC_INLINE int_fast32_t __IQNexp(int_fast32_t iqNInput, const uint_fast32_t
      * only).
      */
     __mpyf_start(&ui16IntState, &ui16MPYState);
-    
+
     /*
      * Initialize the coefficient pointer to the Taylor Series iq30 coefficients
      * for the exponential functions. Set the iq30 result to the first
@@ -108,32 +108,32 @@ __STATIC_INLINE int_fast32_t __IQNexp(int_fast32_t iqNInput, const uint_fast32_t
      */
     piq30Coeffs = _IQ30exp_coeffs;
     uiq30FractionalResult = *piq30Coeffs++;
-    
+
     /* Compute exp^(iq31Fractional). */
     for (ui8Count = _IQ30exp_order; ui8Count > 0; ui8Count--) {
         uiq30FractionalResult = __mpyf_l(iq31Fractional, uiq30FractionalResult);
         uiq30FractionalResult += *piq30Coeffs++;
     }
-    
+
     /* Scale the iq30 fractional result by to iq31. */
     uiq31FractionalResult = uiq30FractionalResult << 1;
-    
+
     /*
      * Multiply the integer result in iqN format and the fractional result in
      * iq31 format to obtain the result in iqN format.
      */
     uiqNResult = __mpyf_ul(uiqNIntegerResult, uiq31FractionalResult);
-    
-    /* 
+
+    /*
      * Mark the end of all multiplies. This restores MPY and interrupt states
      * (MSP430 only).
      */
     __mpy_stop(&ui16IntState, &ui16MPYState);
-    
+
     /* The result is scaled by 2, round the result and scale to iqN format. */
     uiqNResult++;
     uiqNResult >>= 1;
-    
+
     return uiqNResult;
 }
 

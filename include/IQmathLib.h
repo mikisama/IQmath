@@ -964,10 +964,10 @@ extern float _IQ1toF(_iq1 A);
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //*****************************************************************************
 //
-// Converts an IQ number between a specified IQ format and another 
-// specified IQ format. 
+// Converts an IQ number between a specified IQ format and another
+// specified IQ format.
 //
-// For the functions of type _IQXtoIQY, the values are shifted by the 
+// For the functions of type _IQXtoIQY, the values are shifted by the
 // difference of X and Y, depending on which one is larger. The definition is
 // as follows:
 //
@@ -2087,7 +2087,7 @@ extern int32_t _IQrepeat(int32_t A, int32_t B);
  * @brief Multiplies two global IQ format numbers.
  *
  * @param A               Global IQ format number to be multiplied.
- * @param B               Global IQ format number to be multiplied. 
+ * @param B               Global IQ format number to be multiplied.
  *
  * @return                Global IQ type result of multiplication.
  */
@@ -2224,7 +2224,7 @@ extern _iq1 _IQ1rmpy(_iq1 A, _iq1 B);
  * @brief Multiplies two global IQ format numbers, with rounding
  *
  * @param A               Global IQ format number to be multiplied.
- * @param B               Global IQ format number to be multiplied. 
+ * @param B               Global IQ format number to be multiplied.
  *
  * @return                Global IQ type result of multiplication.
  */
@@ -2361,7 +2361,7 @@ extern _iq1 _IQ1rsmpy(_iq1 A, _iq1 B);
  * @brief Multiplies two global IQ format numbers, with rounding and saturation.
  *
  * @param A               Global IQ format number to be multiplied.
- * @param B               Global IQ format number to be multiplied. 
+ * @param B               Global IQ format number to be multiplied.
  *
  * @return                Global IQ type result of multiplication.
  */
@@ -2498,7 +2498,7 @@ extern _iq1 _IQ1div(_iq1 A, _iq1 B);
  * @brief Divides two global IQ format numbers.
  *
  * @param A               Global IQ format numerator to be divided.
- * @param B               Global IQ format denominator to divide by. 
+ * @param B               Global IQ format denominator to divide by.
  *
  * @return                Global IQ type result of division.
  */
@@ -3775,7 +3775,7 @@ extern _iq1 _IQ1atan2PU(_iq1 A, _iq1 B);
  * @param A               Global IQ format input.
  * @param B               Global IQ format input.
  *
- * @return                Global IQ type per-unit result of 
+ * @return                Global IQ type per-unit result of
  *                        4-quadrant arctangent.
  */
 #if GLOBAL_IQ == 30
@@ -5176,14 +5176,14 @@ extern int32_t _IQ1mpyIQX(int32_t A, int n1, int32_t B, int n2);
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /**
- * @brief Multiply two IQ numbers in different IQ formats, 
+ * @brief Multiply two IQ numbers in different IQ formats,
  * returning the product in global IQ format.
  *
  * @param A               IQN1 format input to be multiplied.
  * @param n1              IQ format for first value.
  * @param B               IQN2 format input to be multiplied.
  * @param n2              IQ format for second value.
- * 
+ *
  *
  * @return                Global IQ format result of the multiplication.
  */
@@ -5583,7 +5583,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ30 type input.
  * @param B               IQ30 type input
- * 
+ *
  * @return                IQ30 result of magnitude operation.
  */
 #define _IQ30mag(A, B)             _IQmag(A, B)
@@ -5592,7 +5592,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ29 type input.
  * @param B               IQ29 type input
- * 
+ *
  * @return                IQ29 result of magnitude operation.
  */
 #define _IQ29mag(A, B)             _IQmag(A, B)
@@ -5601,7 +5601,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ28 type input.
  * @param B               IQ28 type input
- * 
+ *
  * @return                IQ28 result of magnitude operation.
  */
 #define _IQ28mag(A, B)             _IQmag(A, B)
@@ -5610,7 +5610,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ27 type input.
  * @param B               IQ27 type input
- * 
+ *
  * @return                IQ27 result of magnitude operation.
  */
 #define _IQ27mag(A, B)             _IQmag(A, B)
@@ -5619,7 +5619,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ26 type input.
  * @param B               IQ26 type input
- * 
+ *
  * @return                IQ26 result of magnitude operation.
  */
 #define _IQ26mag(A, B)             _IQmag(A, B)
@@ -5628,7 +5628,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ25 type input.
  * @param B               IQ25 type input
- * 
+ *
  * @return                IQ25 result of magnitude operation.
  */
 #define _IQ25mag(A, B)             _IQmag(A, B)
@@ -5637,7 +5637,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ24 type input.
  * @param B               IQ24 type input
- * 
+ *
  * @return                IQ24 result of magnitude operation.
  */
 #define _IQ24mag(A, B)             _IQmag(A, B)
@@ -5646,7 +5646,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ23 type input.
  * @param B               IQ23 type input
- * 
+ *
  * @return                IQ23 result of magnitude operation.
  */
 #define _IQ23mag(A, B)             _IQmag(A, B)
@@ -5655,7 +5655,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ22 type input.
  * @param B               IQ22 type input
- * 
+ *
  * @return                IQ22 result of magnitude operation.
  */
 #define _IQ22mag(A, B)             _IQmag(A, B)
@@ -5664,7 +5664,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ21 type input.
  * @param B               IQ21 type input
- * 
+ *
  * @return                IQ21 result of magnitude operation.
  */
 #define _IQ21mag(A, B)             _IQmag(A, B)
@@ -5673,7 +5673,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ20 type input.
  * @param B               IQ20 type input
- * 
+ *
  * @return                IQ20 result of magnitude operation.
  */
 #define _IQ20mag(A, B)             _IQmag(A, B)
@@ -5682,7 +5682,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ19 type input.
  * @param B               IQ19 type input
- * 
+ *
  * @return                IQ19 result of magnitude operation.
  */
 #define _IQ19mag(A, B)             _IQmag(A, B)
@@ -5691,7 +5691,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ18 type input.
  * @param B               IQ18 type input
- * 
+ *
  * @return                IQ18 result of magnitude operation.
  */
 #define _IQ18mag(A, B)             _IQmag(A, B)
@@ -5700,7 +5700,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ17 type input.
  * @param B               IQ17 type input
- * 
+ *
  * @return                IQ17 result of magnitude operation.
  */
 #define _IQ17mag(A, B)             _IQmag(A, B)
@@ -5709,7 +5709,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ16 type input.
  * @param B               IQ16 type input
- * 
+ *
  * @return                IQ16 result of magnitude operation.
  */
 #define _IQ16mag(A, B)             _IQmag(A, B)
@@ -5718,7 +5718,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ15 type input.
  * @param B               IQ15 type input
- * 
+ *
  * @return                IQ15 result of magnitude operation.
  */
 #define _IQ15mag(A, B)             _IQmag(A, B)
@@ -5727,7 +5727,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ14 type input.
  * @param B               IQ14 type input
- * 
+ *
  * @return                IQ14 result of magnitude operation.
  */
 #define _IQ14mag(A, B)             _IQmag(A, B)
@@ -5736,7 +5736,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ13 type input.
  * @param B               IQ13 type input
- * 
+ *
  * @return                IQ13 result of magnitude operation.
  */
 #define _IQ13mag(A, B)             _IQmag(A, B)
@@ -5745,7 +5745,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ12 type input.
  * @param B               IQ12 type input
- * 
+ *
  * @return                IQ12 result of magnitude operation.
  */
 #define _IQ12mag(A, B)             _IQmag(A, B)
@@ -5754,7 +5754,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ11 type input.
  * @param B               IQ11 type input
- * 
+ *
  * @return                IQ11 result of magnitude operation.
  */
 #define _IQ11mag(A, B)             _IQmag(A, B)
@@ -5763,7 +5763,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ10 type input.
  * @param B               IQ10 type input
- * 
+ *
  * @return                IQ10 result of magnitude operation.
  */
 #define _IQ10mag(A, B)             _IQmag(A, B)
@@ -5772,7 +5772,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ9 type input.
  * @param B               IQ9 type input
- * 
+ *
  * @return                IQ9 result of magnitude operation.
  */
 #define _IQ9mag(A, B)             _IQmag(A, B)
@@ -5781,7 +5781,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ8 type input.
  * @param B               IQ8 type input
- * 
+ *
  * @return                IQ8 result of magnitude operation.
  */
 #define _IQ8mag(A, B)             _IQmag(A, B)
@@ -5790,7 +5790,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ7 type input.
  * @param B               IQ7 type input
- * 
+ *
  * @return                IQ7 result of magnitude operation.
  */
 #define _IQ7mag(A, B)             _IQmag(A, B)
@@ -5799,7 +5799,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ6 type input.
  * @param B               IQ6 type input
- * 
+ *
  * @return                IQ6 result of magnitude operation.
  */
 #define _IQ6mag(A, B)             _IQmag(A, B)
@@ -5808,7 +5808,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ5 type input.
  * @param B               IQ5 type input
- * 
+ *
  * @return                IQ5 result of magnitude operation.
  */
 #define _IQ5mag(A, B)             _IQmag(A, B)
@@ -5817,7 +5817,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ4 type input.
  * @param B               IQ4 type input
- * 
+ *
  * @return                IQ4 result of magnitude operation.
  */
 #define _IQ4mag(A, B)             _IQmag(A, B)
@@ -5826,7 +5826,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ3 type input.
  * @param B               IQ3 type input
- * 
+ *
  * @return                IQ3 result of magnitude operation.
  */
 #define _IQ3mag(A, B)             _IQmag(A, B)
@@ -5835,7 +5835,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ2 type input.
  * @param B               IQ2 type input
- * 
+ *
  * @return                IQ2 result of magnitude operation.
  */
 #define _IQ2mag(A, B)             _IQmag(A, B)
@@ -5844,7 +5844,7 @@ extern int32_t _IQmag(int32_t A, int32_t B);
  *
  * @param A               IQ1 type input.
  * @param B               IQ1 type input
- * 
+ *
  * @return                IQ1 result of magnitude operation.
  */
 #define _IQ1mag(A, B)             _IQmag(A, B)
@@ -5892,8 +5892,8 @@ extern _iq1 _IQ1imag(_iq1 A, _iq1 B);
  *
  * @param A               Global IQ format input.
  * @param B               Global IQ format input
- * 
- * @return                Global IQ  format result of inverse 
+ *
+ * @return                Global IQ  format result of inverse
  *                        magnitude operation.
  */
 #if GLOBAL_IQ == 30
@@ -6029,7 +6029,7 @@ extern _iq1 _atoIQ1(const char *A);
  * @brief Converts a string into a global IQ format number.
  *
  * @param A               String input.
- * 
+ *
  * @return                Global IQ  format result of conversion.
  */
 #if GLOBAL_IQ == 30
@@ -6167,7 +6167,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @param A               Pointer to the buffer to store the converted IQ number.
  * @param B               The format string specifying how to convert the IQ number.
  * @param C               Global IQ format input.
- * 
+ *
  * @return                Returns 0 if there is no error, 1 if the width is too small to hold the integer
  *                        characters, and 2 if an illegal format was specified.
  */
@@ -6271,7 +6271,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ30 number.
  *
  * @param A               IQ30 type input.
- * 
+ *
  * @return                IQ30 type absolute value of input.
  */
 #define _IQ30abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6279,7 +6279,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ29 number.
  *
  * @param A               IQ29 type input.
- * 
+ *
  * @return                IQ29 type absolute value of input.
  */
 #define _IQ29abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6287,7 +6287,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ28 number.
  *
  * @param A               IQ28 type input.
- * 
+ *
  * @return                IQ28 type absolute value of input.
  */
 #define _IQ28abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6295,7 +6295,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ27 number.
  *
  * @param A               IQ27 type input.
- * 
+ *
  * @return                IQ27 type absolute value of input.
  */
 #define _IQ27abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6303,7 +6303,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ26 number.
  *
  * @param A               IQ26 type input.
- * 
+ *
  * @return                IQ26 type absolute value of input.
  */
 #define _IQ26abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6311,7 +6311,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ25 number.
  *
  * @param A               IQ25 type input.
- * 
+ *
  * @return                IQ25 type absolute value of input.
  */
 #define _IQ25abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6319,7 +6319,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ24 number.
  *
  * @param A               IQ24 type input.
- * 
+ *
  * @return                IQ24 type absolute value of input.
  */
 #define _IQ24abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6327,7 +6327,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ23 number.
  *
  * @param A               IQ23 type input.
- * 
+ *
  * @return                IQ23 type absolute value of input.
  */
 #define _IQ23abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6335,7 +6335,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ22 number.
  *
  * @param A               IQ22 type input.
- * 
+ *
  * @return                IQ22 type absolute value of input.
  */
 #define _IQ22abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6343,7 +6343,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ21 number.
  *
  * @param A               IQ21 type input.
- * 
+ *
  * @return                IQ21 type absolute value of input.
  */
 #define _IQ21abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6351,7 +6351,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ20 number.
  *
  * @param A               IQ20 type input.
- * 
+ *
  * @return                IQ20 type absolute value of input.
  */
 #define _IQ20abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6359,7 +6359,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ19 number.
  *
  * @param A               IQ19 type input.
- * 
+ *
  * @return                IQ19 type absolute value of input.
  */
 #define _IQ19abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6367,7 +6367,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ18 number.
  *
  * @param A               IQ18 type input.
- * 
+ *
  * @return                IQ18 type absolute value of input.
  */
 #define _IQ18abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6375,7 +6375,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ17 number.
  *
  * @param A               IQ17 type input.
- * 
+ *
  * @return                IQ17 type absolute value of input.
  */
 #define _IQ17abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6383,7 +6383,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ16 number.
  *
  * @param A               IQ16 type input.
- * 
+ *
  * @return                IQ16 type absolute value of input.
  */
 #define _IQ16abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6391,7 +6391,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ15 number.
  *
  * @param A               IQ15 type input.
- * 
+ *
  * @return                IQ15 type absolute value of input.
  */
 #define _IQ15abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6399,7 +6399,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ14 number.
  *
  * @param A               IQ14 type input.
- * 
+ *
  * @return                IQ14 type absolute value of input.
  */
 #define _IQ14abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6407,7 +6407,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ13 number.
  *
  * @param A               IQ13 type input.
- * 
+ *
  * @return                IQ13 type absolute value of input.
  */
 #define _IQ13abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6415,7 +6415,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ12 number.
  *
  * @param A               IQ12 type input.
- * 
+ *
  * @return                IQ12 type absolute value of input.
  */
 #define _IQ12abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6423,7 +6423,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ11 number.
  *
  * @param A               IQ11 type input.
- * 
+ *
  * @return                IQ11 type absolute value of input.
  */
 #define _IQ11abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6431,7 +6431,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ10 number.
  *
  * @param A               IQ10 type input.
- * 
+ *
  * @return                IQ10 type absolute value of input.
  */
 #define _IQ10abs(A)             (((A) < 0) ? - (A) : (A))
@@ -6439,7 +6439,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ9 number.
  *
  * @param A               IQ9 type input.
- * 
+ *
  * @return                IQ9 type absolute value of input.
  */
 #define _IQ9abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6447,7 +6447,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ8 number.
  *
  * @param A               IQ8 type input.
- * 
+ *
  * @return                IQ8 type absolute value of input.
  */
 #define _IQ8abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6455,7 +6455,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ7 number.
  *
  * @param A               IQ7 type input.
- * 
+ *
  * @return                IQ7 type absolute value of input.
  */
 #define _IQ7abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6463,7 +6463,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ6 number.
  *
  * @param A               IQ6 type input.
- * 
+ *
  * @return                IQ6 type absolute value of input.
  */
 #define _IQ6abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6471,7 +6471,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ5 number.
  *
  * @param A               IQ5 type input.
- * 
+ *
  * @return                IQ5 type absolute value of input.
  */
 #define _IQ5abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6479,7 +6479,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ4 number.
  *
  * @param A               IQ4 type input.
- * 
+ *
  * @return                IQ4 type absolute value of input.
  */
 #define _IQ4abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6487,7 +6487,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ3 number.
  *
  * @param A               IQ3 type input.
- * 
+ *
  * @return                IQ3 type absolute value of input.
  */
 #define _IQ3abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6495,7 +6495,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ2 number.
  *
  * @param A               IQ2 type input.
- * 
+ *
  * @return                IQ2 type absolute value of input.
  */
 #define _IQ2abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6503,7 +6503,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an IQ1 number.
  *
  * @param A               IQ1 type input.
- * 
+ *
  * @return                IQ1 type absolute value of input.
  */
 #define _IQ1abs(A)              (((A) < 0) ? - (A) : (A))
@@ -6511,7 +6511,7 @@ extern int16_t _IQ1toa(char *string, const char *format, _iq1 input);
  * @brief Computes the absolute value of an global IQ format number.
  *
  * @param A               Global IQ format input.
- * 
+ *
  * @return                GlobalIQ format absolute value of input.
  */
 #define _IQabs(A)               (((A) < 0) ? - (A) : (A))

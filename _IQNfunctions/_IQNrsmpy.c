@@ -1,9 +1,9 @@
 /*!****************************************************************************
  *  @file       _IQNrsmpy.c
  *  @brief      Functions to multiply two IQ numbers, returning the product in
- *  IQ format. The result is rounded and saturated, so if the product is 
- * greater than the minimum or maximum values for the given IQ format, the 
- * return value is saturated to the minimum or maximum value for the given IQ 
+ *  IQ format. The result is rounded and saturated, so if the product is
+ * greater than the minimum or maximum values for the given IQ format, the
+ * return value is saturated to the minimum or maximum value for the given IQ
  * format (as appropriate).
  *
  *  <hr>
@@ -30,11 +30,11 @@
 __STATIC_INLINE int_fast32_t __IQNrsmpy(int_fast32_t iqNInput1, int_fast32_t iqNInput2, const int8_t q_value)
 {
     int_fast64_t iqNResult;
-    
+
     iqNResult = (int_fast64_t)iqNInput1 * (int_fast64_t)iqNInput2;
     iqNResult = iqNResult + ((uint_fast32_t)1 << (q_value - 1));
     iqNResult = iqNResult >> q_value;
-    
+
     if (iqNResult > INT32_MAX) {
         return INT32_MAX;
     }

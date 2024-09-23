@@ -55,18 +55,18 @@ extern const uint_fast32_t _IQNexp_lookup29[22];
 extern const uint_fast32_t _IQNexp_lookup30[22];
 extern const uint_fast32_t _IQ30exp_coeffs[11];
 
-/* 
- *  Q0.15 lookup table for 1/2x best guess. 
+/*
+ *  Q0.15 lookup table for 1/2x best guess.
  */
 extern const uint8_t _IQ6div_lookup[65];
 
-/* 
- *  Q0.15 lookup table for 1/(2*sqrt(x)) best guess. 
+/*
+ *  Q0.15 lookup table for 1/(2*sqrt(x)) best guess.
  *  96 entries gives us enough accuracy to only need 2 iterations.
  */
 extern const uint_fast16_t _IQ14sqrt_lookup[96];
 
-/* 
+/*
  * Lookup table for shifting using the multiplier.
  * Right: Index is the shift count, result is high 32 bits.
  * Left: Index is 32 - count, result is low (and high) 32 bits.

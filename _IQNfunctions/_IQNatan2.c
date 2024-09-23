@@ -1,6 +1,6 @@
 /*!****************************************************************************
  *  @file       _IQNatan2.c
- *  @brief      Functions to compute the 4-quadrant arctangent of the input 
+ *  @brief      Functions to compute the 4-quadrant arctangent of the input
  *              and return the result.
  *
  *  <hr>
@@ -43,7 +43,7 @@ extern uint_fast32_t _UIQ31div(uint_fast32_t uiq31Input1, uint_fast32_t uiq31Inp
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /**
- * @brief Compute the 4-quadrant arctangent of the IQN input 
+ * @brief Compute the 4-quadrant arctangent of the IQN input
  *        and return the result.
  *
  * @param iqNInputY       IQN type input y.
@@ -81,7 +81,7 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
     int_fast32_t iq29Result;
     const int_fast32_t *piq32Coeffs;
     uint_fast32_t uiq31Input;
-    
+
     /*
      * Extract the sign from the inputs and set the following status bits:
      *
@@ -99,11 +99,11 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
         ui8Status |= 2;
         iqNInputX = -iqNInputX;
     }
-    
+
     /* Save inputs to unsigned iqN formats. */
     uiqNInputX = (uint_fast32_t)iqNInputX;
     uiqNInputY = (uint_fast32_t)iqNInputY;
-    
+
     /*
      * Calcualte the ratio of the inputs in iq31. When using the iq31 div
      * fucntions with inputs of matching type the result will be iq31:
@@ -117,14 +117,14 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
     else {
         uiq31Input = _UIQ31div(uiqNInputY, uiqNInputX);
     }
-    
+
     /* Calculate the index using the left 8 most bits of the input. */
     ui8Index = (uint_fast16_t)(uiq31Input >> 24);
     ui8Index = ui8Index & 0x00fc;
-    
+
     /* Set the coefficient pointer. */
     piq32Coeffs = &_IQ32atan_coeffs[ui8Index];
-    
+
     /*
      * Mark the start of any multiplies. This will disable interrupts and set
      * the multiplier to fractional mode. This is designed to reduce overhead
@@ -132,43 +132,43 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
      * only).
      */
     __mpyf_start(&ui16IntState, &ui16MPYState);
-    
-    /* 
+
+    /*
      * Calculate atan(x) using the following Taylor series:
      *
      *     atan(x) = ((c3*x + c2)*x + c1)*x + c0
      */
-    
+
     /* c3*x */
     uiq32ResultPU = __mpyf_l(uiq31Input, *piq32Coeffs++);
-    
+
     /* c3*x + c2 */
     uiq32ResultPU = uiq32ResultPU + *piq32Coeffs++;
-    
+
     /* (c3*x + c2)*x */
     uiq32ResultPU = __mpyf_l(uiq31Input, uiq32ResultPU);
-    
+
     /* (c3*x + c2)*x + c1 */
     uiq32ResultPU = uiq32ResultPU + *piq32Coeffs++;
-    
+
     /* ((c3*x + c2)*x + c1)*x */
     uiq32ResultPU = __mpyf_l(uiq31Input, uiq32ResultPU);
-    
+
     /* ((c3*x + c2)*x + c1)*x + c0 */
     uiq32ResultPU = uiq32ResultPU + *piq32Coeffs++;
-    
+
     /* Check if we applied the transformation. */
     if (ui8Status & 4) {
         /* atan(y/x) = pi/2 - uiq32ResultPU */
         uiq32ResultPU = (uint32_t)(0x40000000 - uiq32ResultPU);
     }
-    
+
     /* Check if the result needs to be mirrored to the 2nd/3rd quadrants. */
     if (ui8Status & 2) {
         /* atan(y/x) = pi - uiq32ResultPU */
         uiq32ResultPU = (uint32_t)(0x80000000 - uiq32ResultPU);
     }
-    
+
     /* Round and convert result to correct format (radians/PU and iqN type). */
     if (type == TYPE_PU) {
         uiq32ResultPU += (uint_fast32_t)1 << (31 - q_value);
@@ -181,20 +181,20 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
          *     iq31mpy(iq32, iq28) = iq29
          */
         iq29Result = __mpyf_l(uiq32ResultPU, iq28_twoPi);
-        
+
         /* Only round IQ formats < 29 */
         if (q_value < 29) {
             iq29Result += (uint_fast32_t)1 << (28 - q_value);
         }
         iqNResult = iq29Result >> (29 - q_value);
     }
-    
-    /* 
+
+    /*
      * Mark the end of all multiplies. This restores MPY and interrupt states
      * (MSP430 only).
      */
     __mpy_stop(&ui16IntState, &ui16MPYState);
-    
+
     /* Set the sign bit and result to correct quadrant. */
     if (ui8Status & 1) {
         return -iqNResult;
@@ -205,7 +205,7 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
 }
 #else
 /**
- * @brief Compute the 4-quadrant arctangent of the IQN input 
+ * @brief Compute the 4-quadrant arctangent of the IQN input
  *        and return the result, using MathACL.
  *
  * @param iqNInputY       IQN type input y.
@@ -313,7 +313,7 @@ __STATIC_INLINE int_fast32_t __IQNatan2(int_fast32_t iqNInputY, int_fast32_t iqN
 
 /* ATAN2 */
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ29 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ29 input
  *        and return the result, in radians.
  *
  * @param y               IQ29 type input y.
@@ -326,7 +326,7 @@ int32_t _IQ29atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 29);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ28 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ28 input
  *        and return the result, in radians.
  *
  * @param y               IQ28 type input y.
@@ -339,7 +339,7 @@ int32_t _IQ28atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 28);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ27 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ27 input
  *        and return the result, in radians.
  *
  * @param y               IQ27 type input y.
@@ -352,7 +352,7 @@ int32_t _IQ27atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 27);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ26 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ26 input
  *        and return the result, in radians.
  *
  * @param y               IQ26 type input y.
@@ -365,7 +365,7 @@ int32_t _IQ26atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 26);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ25 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ25 input
  *        and return the result, in radians.
  *
  * @param y               IQ25 type input y.
@@ -378,7 +378,7 @@ int32_t _IQ25atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 25);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ24 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ24 input
  *        and return the result, in radians.
  *
  * @param y               IQ24 type input y.
@@ -391,7 +391,7 @@ int32_t _IQ24atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 24);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ23 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ23 input
  *        and return the result, in radians.
  *
  * @param y               IQ23 type input y.
@@ -404,7 +404,7 @@ int32_t _IQ23atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 23);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ22 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ22 input
  *        and return the result, in radians.
  *
  * @param y               IQ22 type input y.
@@ -417,7 +417,7 @@ int32_t _IQ22atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 22);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ21 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ21 input
  *        and return the result, in radians.
  *
  * @param y               IQ21 type input y.
@@ -430,7 +430,7 @@ int32_t _IQ21atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 21);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ20 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ20 input
  *        and return the result, in radians.
  *
  * @param y               IQ20 type input y.
@@ -443,7 +443,7 @@ int32_t _IQ20atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 20);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ19 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ19 input
  *        and return the result, in radians.
  *
  * @param y               IQ19 type input y.
@@ -456,7 +456,7 @@ int32_t _IQ19atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 19);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ18 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ18 input
  *        and return the result, in radians.
  *
  * @param y               IQ18 type input y.
@@ -469,7 +469,7 @@ int32_t _IQ18atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 18);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ17 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ17 input
  *        and return the result, in radians.
  *
  * @param y               IQ17 type input y.
@@ -482,7 +482,7 @@ int32_t _IQ17atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 17);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ16 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ16 input
  *        and return the result, in radians.
  *
  * @param y               IQ16 type input y.
@@ -495,7 +495,7 @@ int32_t _IQ16atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 16);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ15 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ15 input
  *        and return the result, in radians.
  *
  * @param y               IQ15 type input y.
@@ -508,7 +508,7 @@ int32_t _IQ15atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 15);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ14 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ14 input
  *        and return the result, in radians.
  *
  * @param y               IQ14 type input y.
@@ -521,7 +521,7 @@ int32_t _IQ14atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 14);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ13 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ13 input
  *        and return the result, in radians.
  *
  * @param y               IQ13 type input y.
@@ -534,7 +534,7 @@ int32_t _IQ13atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 13);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ12 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ12 input
  *        and return the result, in radians.
  *
  * @param y               IQ12 type input y.
@@ -547,7 +547,7 @@ int32_t _IQ12atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 12);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ11 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ11 input
  *        and return the result, in radians.
  *
  * @param y               IQ11 type input y.
@@ -560,7 +560,7 @@ int32_t _IQ11atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 11);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ10 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ10 input
  *        and return the result, in radians.
  *
  * @param y               IQ10 type input y.
@@ -573,7 +573,7 @@ int32_t _IQ10atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 10);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ9 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ9 input
  *        and return the result, in radians.
  *
  * @param y               IQ9 type input y.
@@ -586,7 +586,7 @@ int32_t _IQ9atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 9);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ8 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ8 input
  *        and return the result, in radians.
  *
  * @param y               IQ8 type input y.
@@ -599,7 +599,7 @@ int32_t _IQ8atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 8);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ7 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ7 input
  *        and return the result, in radians.
  *
  * @param y               IQ7 type input y.
@@ -612,7 +612,7 @@ int32_t _IQ7atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 7);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ6 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ6 input
  *        and return the result, in radians.
  *
  * @param y               IQ6 type input y.
@@ -625,7 +625,7 @@ int32_t _IQ6atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 6);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ5 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ5 input
  *        and return the result, in radians.
  *
  * @param y               IQ5 type input y.
@@ -638,7 +638,7 @@ int32_t _IQ5atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 5);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ4 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ4 input
  *        and return the result, in radians.
  *
  * @param y               IQ4 type input y.
@@ -651,7 +651,7 @@ int32_t _IQ4atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 4);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ3 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ3 input
  *        and return the result, in radians.
  *
  * @param y               IQ3 type input y.
@@ -664,7 +664,7 @@ int32_t _IQ3atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 3);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ2 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ2 input
  *        and return the result, in radians.
  *
  * @param y               IQ2 type input y.
@@ -677,7 +677,7 @@ int32_t _IQ2atan2(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_RAD, 2);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ1 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ1 input
  *        and return the result, in radians.
  *
  * @param y               IQ1 type input y.
@@ -692,7 +692,7 @@ int32_t _IQ1atan2(int32_t y, int32_t x)
 
 /* ATAN2PU */
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ31 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ31 input
  *        and return the result.
  *
  * @param y               IQ31 type input y.
@@ -705,7 +705,7 @@ int32_t _IQ31atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 31);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ30 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ30 input
  *        and return the result.
  *
  * @param y               IQ30 type input y.
@@ -718,7 +718,7 @@ int32_t _IQ30atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 30);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ29 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ29 input
  *        and return the result.
  *
  * @param y               IQ29 type input y.
@@ -731,7 +731,7 @@ int32_t _IQ29atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 29);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ28 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ28 input
  *        and return the result.
  *
  * @param y               IQ28 type input y.
@@ -744,7 +744,7 @@ int32_t _IQ28atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 28);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ27 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ27 input
  *        and return the result.
  *
  * @param y               IQ27 type input y.
@@ -757,7 +757,7 @@ int32_t _IQ27atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 27);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ26 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ26 input
  *        and return the result.
  *
  * @param y               IQ26 type input y.
@@ -770,7 +770,7 @@ int32_t _IQ26atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 26);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ25 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ25 input
  *        and return the result.
  *
  * @param y               IQ25 type input y.
@@ -783,7 +783,7 @@ int32_t _IQ25atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 25);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ24 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ24 input
  *        and return the result.
  *
  * @param y               IQ24 type input y.
@@ -796,7 +796,7 @@ int32_t _IQ24atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 24);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ23 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ23 input
  *        and return the result.
  *
  * @param y               IQ23 type input y.
@@ -809,7 +809,7 @@ int32_t _IQ23atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 23);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ22 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ22 input
  *        and return the result.
  *
  * @param y               IQ22 type input y.
@@ -822,7 +822,7 @@ int32_t _IQ22atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 22);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ21 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ21 input
  *        and return the result.
  *
  * @param y               IQ21 type input y.
@@ -835,7 +835,7 @@ int32_t _IQ21atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 21);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ20 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ20 input
  *        and return the result.
  *
  * @param y               IQ20 type input y.
@@ -848,7 +848,7 @@ int32_t _IQ20atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 20);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ19 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ19 input
  *        and return the result.
  *
  * @param y               IQ19 type input y.
@@ -861,7 +861,7 @@ int32_t _IQ19atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 19);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ18 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ18 input
  *        and return the result.
  *
  * @param y               IQ18 type input y.
@@ -874,7 +874,7 @@ int32_t _IQ18atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 18);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ17 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ17 input
  *        and return the result.
  *
  * @param y               IQ17 type input y.
@@ -887,7 +887,7 @@ int32_t _IQ17atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 17);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ16 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ16 input
  *        and return the result.
  *
  * @param y               IQ16 type input y.
@@ -900,7 +900,7 @@ int32_t _IQ16atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 16);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ15 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ15 input
  *        and return the result.
  *
  * @param y               IQ15 type input y.
@@ -913,7 +913,7 @@ int32_t _IQ15atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 15);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ14 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ14 input
  *        and return the result.
  *
  * @param y               IQ14 type input y.
@@ -926,7 +926,7 @@ int32_t _IQ14atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 14);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ13 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ13 input
  *        and return the result.
  *
  * @param y               IQ13 type input y.
@@ -939,7 +939,7 @@ int32_t _IQ13atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 13);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ12 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ12 input
  *        and return the result.
  *
  * @param y               IQ12 type input y.
@@ -952,7 +952,7 @@ int32_t _IQ12atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 12);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ11 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ11 input
  *        and return the result.
  *
  * @param y               IQ11 type input y.
@@ -965,7 +965,7 @@ int32_t _IQ11atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 11);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ10 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ10 input
  *        and return the result.
  *
  * @param y               IQ10 type input y.
@@ -978,7 +978,7 @@ int32_t _IQ10atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 10);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ9 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ9 input
  *        and return the result.
  *
  * @param y               IQ9 type input y.
@@ -991,7 +991,7 @@ int32_t _IQ9atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 9);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ8 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ8 input
  *        and return the result.
  *
  * @param y               IQ8 type input y.
@@ -1004,7 +1004,7 @@ int32_t _IQ8atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 8);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ7 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ7 input
  *        and return the result.
  *
  * @param y               IQ7 type input y.
@@ -1017,7 +1017,7 @@ int32_t _IQ7atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 7);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ6 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ6 input
  *        and return the result.
  *
  * @param y               IQ6 type input y.
@@ -1030,7 +1030,7 @@ int32_t _IQ6atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 6);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ5 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ5 input
  *        and return the result.
  *
  * @param y               IQ5 type input y.
@@ -1043,7 +1043,7 @@ int32_t _IQ5atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 5);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ4 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ4 input
  *        and return the result.
  *
  * @param y               IQ4 type input y.
@@ -1056,7 +1056,7 @@ int32_t _IQ4atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 4);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ3 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ3 input
  *        and return the result.
  *
  * @param y               IQ3 type input y.
@@ -1069,7 +1069,7 @@ int32_t _IQ3atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 3);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ2 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ2 input
  *        and return the result.
  *
  * @param y               IQ2 type input y.
@@ -1082,7 +1082,7 @@ int32_t _IQ2atan2PU(int32_t y, int32_t x)
     return __IQNatan2(y, x, TYPE_PU, 2);
 }
 /**
- * @brief Compute the 4-quadrant arctangent of the IQ1 input 
+ * @brief Compute the 4-quadrant arctangent of the IQ1 input
  *        and return the result.
  *
  * @param y               IQ1 type input y.
